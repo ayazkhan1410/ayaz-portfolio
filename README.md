@@ -2,8 +2,6 @@
 
 A single-file developer portfolio: **one `index.html`, plain HTML, CSS and JavaScript**, with no framework, no build step and no dependencies apart from Google Fonts.
 
-**Live:** https://ayazkhan1410.github.io/ayaz-portfolio/
-
 ## Features
 - The page "builds itself" on load: agent cursors assemble each section, and you can skip the build.
 - A giant outlined **PORTFOLIO** wordmark hero, with a live `django · runserver` log panel.
