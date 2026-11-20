@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ayaz Khan Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700;800&display=swap">
+<style id="site-css">
+/* Layout: one dark-first stage (light theme too), outlined giant wordmark hero, then stacked sections on a 1120px column, worker "cursors" roaming above it */
+:root {
+  --bg: #0b0a0c;
+  --panel: #141216;
+  --line: #2a2529;
+  --fg: #f1ecea;
+  --muted: #9b9195;
+  --red: #ff3b2f;
+  --red-dim: #8f2019;
+  --ghost: rgba(140,160,180,.07);
+  --c1: #4fd1ff; --c2: #ffd84f; --c3: #7dff9b; --c4: #d18cff;
+  --fg2: #d9d1cf;
+  --on-accent: #0b0a0c;
+  --bar-bg: rgba(20,18,22,.94);
+  --status-line: rgba(125,255,155,.35);
+  --outline: rgba(79,209,255,.22);
+  --glow: rgba(255,59,47,.10);
+  /* code panels stay dark in both themes */
+  --code-bg: #0f0d10; --code-fg: #f1ecea; --code-muted: #9b9195; --code-line: #2a2529;
+  --s1: #4fd1ff; --s2: #ffd84f; --s3: #7dff9b; --s4: #d18cff;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --script: "Caveat", "Segoe Script", cursive;
+  --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-ak-theme="dark"]) {
+    --bg: #f5f2ef; --panel: #ffffff; --line: #e2d9d5; --fg: #17131a; --fg2: #3b3338; --muted: #6e6469;
+    --red: #e3261b; --ghost: rgba(40,50,70,.06);
+    --c1: #0b7fc0; --c2: #a87800; --c3: #1d8f45; --c4: #7f3bc8;
+    --on-accent: #ffffff; --bar-bg: rgba(255,255,255,.94); --status-line: rgba(29,143,69,.35);
+    --outline: rgba(11,127,192,.3); --glow: rgba(227,38,27,.07);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"]:not([data-ak-theme="dark"]), :root[data-ak-theme="light"] {
+  --bg: #f5f2ef; --panel: #ffffff; --line: #e2d9d5; --fg: #17131a; --fg2: #3b3338; --muted: #6e6469;
+  --red: #e3261b; --ghost: rgba(40,50,70,.06);
+  --c1: #0b7fc0; --c2: #a87800; --c3: #1d8f45; --c4: #7f3bc8;
+  --on-accent: #ffffff; --bar-bg: rgba(255,255,255,.94); --status-line: rgba(29,143,69,.35);
+  --outline: rgba(11,127,192,.3); --glow: rgba(227,38,27,.07);
+  color-scheme: light;
+}
+:root[data-ak-theme="dark"] { color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 var(--body);
+  overflow-x: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 72px;
+  background-image: radial-gradient(60rem 40rem at 70% -10%, var(--glow), transparent 60%);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--c1); outline-offset: 3px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.mono { font-family: var(--mono); }
+.label { font: 600 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
+h2 { font: 800 clamp(28px, 4vw, 40px)/1.1 var(--body); letter-spacing: -.02em; margin: 10px 0 8px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+
+/* nav */
+nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding-block: 14px; background: linear-gradient(var(--bg) 70%, transparent);
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 600 13px var(--mono); }
+.logo b { background: var(--red); color: #fff; font: 400 16px/1 var(--display); padding: 6px 7px; border-radius: 3px; }
+.links { display: flex; gap: 22px; font-size: 14px; flex-wrap: wrap; }
+.links a { text-decoration: none; color: var(--muted); }
+.links a:hover { color: var(--fg); }
+.status { font: 600 11px var(--mono); color: var(--c3); border: 1px solid var(--status-line); padding: 6px 10px; border-radius: 99px; white-space: nowrap; }
+.status::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--c3); margin-right: 7px; box-shadow: 0 0 8px var(--c3); }
+
+/* hero */
+.hero { padding-block: 20px 56px; }
+.word {
+  font: 400 clamp(64px, 22.5vw, 262px)/.82 var(--display);
+  color: transparent; -webkit-text-stroke: 2px var(--red); letter-spacing: .01em; margin: 0;
+  text-transform: uppercase; user-select: none;
+}
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr 1fr; gap: 28px; margin-top: -10px; align-items: start; }
+.hello { font: 600 34px/1 var(--script); margin: 0 0 6px; }
+.name { display: inline-block; background: var(--red); color: #fff; font: 400 clamp(44px, 6vw, 64px)/1 var(--display); padding: 6px 14px 2px; letter-spacing: .02em; }
+.role { margin: 16px 0 12px; }
+.intro { color: var(--fg2); max-width: 46ch; margin: 0 0 22px; }
+.btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; padding: 12px 16px; border: 1px solid var(--line); border-radius: 3px; background: transparent; color: var(--fg); cursor: pointer; }
+.btn.red { background: var(--red); border-color: var(--red); color: #fff; }
+.btn:hover { border-color: var(--red); }
+.stats { display: flex; gap: 26px; margin-top: 30px; flex-wrap: wrap; }
+.stat b { display: block; font: 400 34px/1 var(--display); color: var(--red); letter-spacing: .02em; }
+.stat span { font: 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+
+.portrait { position: relative; aspect-ratio: 4/5; max-width: 100%; background: var(--red); overflow: hidden; border-radius: 2px; }
+.portrait .mono-block { position: absolute; inset: 0; display: grid; place-items: center; font: 400 clamp(110px, 14vw, 170px)/1 var(--display); color: #0b0a0c; letter-spacing: -.02em; }
+.portrait .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.14) 1px, transparent 1px); background-size: 22px 22px; }
+.portrait .code { position: absolute; left: 12px; right: 12px; bottom: 12px; background: var(--code-bg); color: var(--code-fg); font: 11px/1.55 var(--mono); padding: 10px 12px; border-radius: 3px; overflow: hidden; }
+.code .k { color: #ff5a4f; } .code .s { color: var(--s3); } .code .c { color: var(--code-muted); }
+.tag { position: absolute; top: 12px; left: 12px; font: 600 10px var(--mono); letter-spacing: .12em; background: var(--code-bg); color: var(--code-fg); padding: 5px 8px; text-transform: uppercase; }
+
+.side { display: grid; gap: 14px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 16px; }
+.panel h3 { margin: 6px 0 4px; font-size: 16px; }
+.panel p { margin: 0; color: var(--muted); font-size: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font: 11px var(--mono); border: 1px solid var(--line); padding: 4px 8px; border-radius: 99px; color: var(--fg2); }
+
+/* sections */
+section { padding-block: 64px; border-top: 1px solid var(--line); }
+.sec-id { font: 11px var(--mono); color: var(--muted); letter-spacing: .1em; margin-bottom: 14px; }
+.about { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 24px; }
+.about p { color: var(--fg2); margin: 0 0 14px; max-width: 64ch; }
+.quote { border-left: 3px solid var(--red); padding: 6px 0 6px 18px; font-weight: 700; font-size: 18px; color: var(--fg); }
+.facts { display: grid; gap: 12px; }
+.fact { display: grid; grid-template-columns: 110px 1fr; gap: 12px; font-size: 14px; border-bottom: 1px dashed var(--line); padding-bottom: 10px; }
+.fact span:first-child { font: 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; padding-top: 3px; }
+
+.timeline { display: grid; gap: 0; margin-top: 28px; }
+.job { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.job .when { font: 12px var(--mono); color: var(--muted); }
+.job .when b { display: block; color: var(--red); font-weight: 600; margin-bottom: 4px; }
+.job h3 { margin: 0 0 8px; font-size: 19px; }
+.job h3 span { color: var(--muted); font-weight: 500; }
+.job ul { margin: 0; padding-left: 18px; color: var(--fg2); }
+.job li { margin-bottom: 6px; }
+
+/* flagship */
+.flag { margin-top: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+.flag-head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: start; }
+.flag h3 { margin: 8px 0 6px; font-size: 24px; letter-spacing: -.01em; }
+.flag .gh { font: 600 12px var(--mono); color: var(--c1); text-decoration: none; white-space: nowrap; }
+.flag-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); margin: 20px 0; border: 1px solid var(--line); }
+.flag-stats div { background: var(--bg); padding: 14px; }
+.flag-stats b { display: block; font: 400 26px/1 var(--display); color: var(--red); letter-spacing: .02em; }
+.flag-stats span { font: 11px var(--mono); color: var(--muted); }
+.steps-label { font: 600 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.steps { display: flex; gap: 6px; flex-wrap: wrap; }
+.step { font: 600 12px var(--mono); padding: 8px 11px; background: transparent; color: var(--fg2); border: 1px solid var(--line); border-radius: 3px; cursor: pointer; }
+.step[aria-selected="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.step-detail { margin-top: 14px; padding: 14px 16px; background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--red); border-radius: 3px; min-height: 84px; }
+.step-detail b { font: 600 11px var(--mono); color: var(--red); letter-spacing: .1em; }
+.step-detail p { margin: 6px 0 0; color: var(--fg2); }
+
+/* projects */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+.filter { font: 600 12px var(--mono); padding: 7px 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.filter[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color .2s, transform .2s; min-width: 0; }
+.card:hover { border-color: var(--red); transform: translateY(-2px); }
+.card h3 { margin: 0; font-size: 18px; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; flex: 1; }
+.card .foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.card .foot a { font: 600 12px var(--mono); color: var(--c1); text-decoration: none; white-space: nowrap; }
+
+.skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.skill h3 { font: 600 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--red); margin: 0 0 4px; }
+
+/* contact */
+.contact { text-align: center; padding-block: 90px 60px; }
+.contact h2 { font-size: clamp(32px, 5vw, 54px); }
+.contact .lede { margin: 0 auto 26px; }
+.mail { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.mail code { font: 600 15px var(--mono); background: var(--panel); border: 1px solid var(--line); padding: 11px 14px; border-radius: 3px; user-select: all; word-break: break-all; }
+.socials { display: flex; gap: 22px; justify-content: center; margin-top: 26px; flex-wrap: wrap; font: 13px var(--mono); }
+.socials a { color: var(--muted); text-decoration: none; }
+.socials a:hover { color: var(--fg); }
+footer { text-align: center; font: 11px var(--mono); color: var(--muted); padding-block: 20px; }
+
+/* build layer: agents draw each block, then fill it */
+html { overflow-x: clip; }
+.pending { color: transparent !important; -webkit-text-stroke-color: transparent !important; background-color: var(--ghost) !important; background-image: none !important; border-color: transparent !important; box-shadow: none !important; outline: 1px dashed var(--outline); outline-offset: -1px; border-radius: 3px; }
+.pending * { visibility: hidden !important; }
+.revealing { animation: wipe .38s ease-out both; }
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.typing::after { content: ""; display: inline-block; width: .5ch; height: 1em; margin-left: 2px; vertical-align: -0.1em; background: var(--c1); animation: blink .6s steps(1) infinite; }
+.word.typing::after { width: .08em; height: .7em; }
+@keyframes blink { 50% { opacity: 0; } }
+#layer { position: absolute; top: 0; left: 0; width: 0; height: 0; overflow: visible; pointer-events: none; z-index: 15; }
+.agent { position: absolute; left: 0; top: 0; width: 18px; height: 18px; transition: transform .42s cubic-bezier(.3,.7,.3,1); will-change: transform; z-index: 2; }
+.agent svg { width: 18px; height: 18px; display: block; filter: drop-shadow(0 0 5px currentColor); }
+.sel { position: absolute; border: 1.5px solid var(--c1); width: 0; height: 0; transition: width .26s ease-out, height .26s ease-out, opacity .3s; background: rgba(79,209,255,.05); }
+.sel i { position: absolute; width: 6px; height: 6px; background: var(--bg); border: 1.5px solid var(--c1); }
+.sel i:nth-child(1) { left: -4px; top: -4px; } .sel i:nth-child(2) { right: -4px; top: -4px; }
+.sel i:nth-child(3) { left: -4px; bottom: -4px; } .sel i:nth-child(4) { right: -4px; bottom: -4px; }
+.sel b { position: absolute; left: -1.5px; top: -20px; font: 600 10px/1 var(--mono); color: var(--on-accent); padding: 4px 6px; white-space: nowrap; border-radius: 2px 2px 0 0; }
+.bar {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 25;
+  display: flex; align-items: center; gap: 12px; background: var(--bar-bg); border: 1px solid var(--line); border-radius: 99px;
+  padding: 7px 8px 7px 14px; font: 11px var(--mono); color: var(--muted); backdrop-filter: blur(8px); max-width: calc(100% - 32px); white-space: nowrap;
+}
+.dots { display: flex; gap: 4px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+.bar b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.prog { width: 90px; height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.prog span { display: block; height: 100%; width: 0; background: var(--c1); transition: width .3s; }
+.bar button { font: 600 11px var(--mono); background: var(--c1); color: var(--on-accent); border: 0; border-radius: 99px; padding: 6px 12px; cursor: pointer; }
+.bar button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(64px + env(safe-area-inset-bottom, 0px)); background: var(--c3); color: var(--on-accent); font: 600 12px var(--mono); padding: 8px 12px; border-radius: 3px; z-index: 30; }
+
+/* server log */
+.log { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(64px + env(safe-area-inset-bottom, 0px)); z-index: 24; width: 380px; max-width: calc(100% - 32px);
+  background: rgba(15,13,16,.95); border: 1px solid var(--code-line); border-radius: 6px; font: 11px/1.6 var(--mono); color: var(--code-muted); backdrop-filter: blur(8px); overflow: hidden; }
+.log header { display: flex; justify-content: space-between; padding: 7px 10px; border-bottom: 1px solid var(--code-line); color: var(--code-fg); }
+.log header span { color: var(--s3); }
+.log ol { list-style: none; margin: 0; padding: 6px 10px; height: 118px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+.log li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: logIn .25s ease-out; }
+.log .m { color: var(--s1); } .log .ok { color: var(--s3); } .log .ms { color: var(--s2); }
+@keyframes logIn { from { opacity: 0; transform: translateY(4px); } }
+
+/* nav buttons + code view */
+.navr { display: flex; gap: 8px; align-items: center; }
+.navbtn { display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--mono); background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 99px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+.navbtn svg { width: 14px; height: 14px; flex: none; }
+.navbtn:hover { border-color: var(--red); }
+.navbtn[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.menubtn { display: none; }
+#codeView { padding-block: 24px 90px; }
+.code-top { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+.code-top h2 { margin: 8px 0 6px; }
+
+/* EDI sample segment */
+.seg { margin: 10px 0 0; font: 12px/1.6 var(--mono); color: var(--s3); background: var(--code-bg); border: 1px dashed var(--line); border-radius: 3px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+.seg-cap { font: 10px var(--mono); color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-top: 10px; display: block; }
+
+
+.src { margin-top: 24px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.src-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.src-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.src-tab { font: 600 12px var(--mono); padding: 6px 11px; border-radius: 3px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.src-tab[aria-selected="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.src-meta { display: flex; gap: 12px; align-items: center; font: 12px var(--mono); color: var(--muted); }
+.src-meta b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.src pre { margin: 0; max-height: 460px; overflow: auto; background: var(--code-bg); color: var(--code-fg); font: 12px/1.65 var(--mono); padding: 14px 0; counter-reset: ln; }
+.src .ln { display: block; padding: 0 16px 0 0; white-space: pre; }
+.src .ln::before { counter-increment: ln; content: counter(ln); display: inline-block; width: 4.5ch; margin-right: 16px; text-align: right; color: var(--code-muted); opacity: .6; user-select: none; }
+.src-note { font: 12px var(--mono); color: var(--muted); margin-top: 12px; }
+
+@media (max-width: 700px) { .log { display: none; } }
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr 1fr; }
+  .side { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+  .cards, .skills { grid-template-columns: 1fr 1fr; }
+  .about { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px; z-index: 30; }
+  .links.open { display: flex; }
+  .links a { padding: 10px 12px; border-radius: 4px; font-size: 15px; color: var(--fg); }
+  .links a:hover { background: var(--ghost); }
+  .menubtn { display: inline-flex; }
+  nav { position: sticky; }
+  .status { display: none; }
+}
+@media (max-width: 600px) {
+  .navbtn .lbl { display: none; }
+  .navbtn { padding: 8px; }
+  .hero-grid, .side, .cards, .skills { grid-template-columns: 1fr; }
+  .portrait { max-width: 320px; }
+  .job { grid-template-columns: 1fr; gap: 8px; }
+  .flag-stats { grid-template-columns: 1fr 1fr; }
+  .word { -webkit-text-stroke-width: 1.5px; }
+  .bar .hide-sm { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .card { transition: none; }
+}
+</style>
+<script id="theme-init">try { var t = localStorage.getItem("ak-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-ak-theme", t); } catch (e) {}</script>
+</head>
+<body>
+
+<nav class="wrap" aria-label="Main">
+  <a class="logo" href="#top"><b>AK</b>ayaz.khan</a>
+  <div class="links" id="navLinks">
+    <a href="#about">About</a><a href="#experience">Experience</a><a href="#flagship">Flagship</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+  </div>
+  <div class="navr">
+    <span class="status">Open to work</span>
+    <button class="navbtn" id="codeBtn" type="button" aria-pressed="false" title="See the code of this portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg><span class="lbl">Code</span></button>
+    <button class="navbtn" id="themeBtn" type="button"></button>
+    <button class="navbtn menubtn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</nav>
+
+<main class="wrap" id="codeView" hidden>
+  <div class="code-top">
+    <div><span class="label">Open source</span><h2>Portfolio code</h2>
+      <p class="lede">This whole portfolio is one HTML file with no frameworks and no build step. Copy it, change the content to yours, and host it on GitHub Pages.</p></div>
+    <button class="btn" id="backUi" type="button">← Back to portfolio</button>
+  </div>
+  <div class="src">
+    <div class="src-head">
+      <div class="src-tabs" role="tablist" id="srcTabs">
+        <button class="src-tab" role="tab" type="button" aria-selected="true" data-k="full">index.html</button>
+        <button class="src-tab" role="tab" type="button" aria-selected="false" data-k="html">HTML</button>
+        <button class="src-tab" role="tab" type="button" aria-selected="false" data-k="css">CSS</button>
+        <button class="src-tab" role="tab" type="button" aria-selected="false" data-k="js">JS</button>
+      </div>
+      <div class="src-meta"><span><b id="srcLines">0</b> lines</span><span><b id="srcSize">0</b> KB</span><button class="btn red" id="srcCopy" type="button">Copy code</button></div>
+    </div>
+    <pre id="srcCode" tabindex="0" aria-label="Source code"></pre>
+  </div>
+  <p class="src-note">Free to reuse. A credit link back to github.com/ayazkhan1410 is appreciated.</p>
+</main>
+
+<header class="hero wrap" id="top">
+  <h1 class="word" aria-label="Portfolio">Portfolio</h1>
+  <div class="hero-grid">
+    <div>
+      <p class="hello">Hello, I'm</p>
+      <span class="name">AYAZ.</span>
+      <p class="label role">Backend Developer · Python / Django</p>
+      <p class="intro">I build REST APIs, EDI pipelines and background job systems with Python and Django. Lately I've been building AI agent backends with LangChain and LangGraph.</p>
+      <div class="btns">
+        <a class="btn red" href="#projects">View projects →</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>2+</b><span>Years experience</span></div>
+        <div class="stat"><b>10+</b><span>Retail partners</span></div>
+        <div class="stat"><b>30%</b><span>Fewer API calls</span></div>
+      </div>
+    </div>
+
+    <div class="portrait" aria-hidden="true">
+      <div class="grid"></div>
+      <span class="tag">Bahawalpur · PK</span>
+      <div class="mono-block">AK</div>
+      <div class="code"><span class="k">@shared_task</span>(bind=<span class="k">True</span>)<br><span class="k">def</span> ship_837p(self, batch_id):<br>&nbsp;&nbsp;batch = Batch.get(batch_id)<br>&nbsp;&nbsp;sftp.push(batch.to_837p()) <span class="c"># <span class="s">done</span></span></div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <span class="label">Currently</span>
+        <h3>Backend Developer at BetaCodes</h3>
+        <p>Streaming real-time data to AI services with Kafka, and running scheduled jobs with Celery and Beat.</p>
+        <div class="chips"><span class="chip">Kafka</span><span class="chip">Celery</span><span class="chip">Microservices</span></div>
+      </div>
+      <div class="panel">
+        <span class="label">Core stack</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Django</span><span class="chip">DRF</span><span class="chip">PostgreSQL</span><span class="chip">Redis</span><span class="chip">AWS</span><span class="chip">Docker</span><span class="chip">LangGraph</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="wrap" id="about">
+  <div class="sec-id">// ABOUT</div>
+  <span class="label">Developer profile</span>
+  <h2>Background &amp; approach</h2>
+  <div class="about">
+    <div>
+      <p>I'm Ayaz Khan, a backend developer from Bahawalpur, Pakistan. I studied Information Technology at The Islamia University of Bahawalpur and started my career on a travel booking platform, building hotel, flight and auth APIs.</p>
+      <p>Most of my work since then has been on systems that talk to other systems: EDI integrations with large US retailers, healthcare claim files sent over SFTP, and Kafka streams feeding AI services. That work taught me to care about queues, retries, slow queries and clear logs.</p>
+      <p class="quote">I like backend code that is simple to read, easy to test, and keeps running when traffic or partners misbehave.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><span>Based in</span><span>Bahawalpur, Pakistan · open to remote and relocation</span></div>
+      <div class="fact"><span>Education</span><span>BS Information Technology, Islamia University of Bahawalpur (2020–2024), CGPA 3.29</span></div>
+      <div class="fact"><span>Focus</span><span>Django REST APIs, background jobs, integrations, AI agents</span></div>
+      <div class="fact"><span>Certs</span><span>Python 3 and Python OOP (Udemy)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="experience">
+  <div class="sec-id">// EXPERIENCE</div>
+  <span class="label">Where I've worked</span>
+  <h2>Experience</h2>
+  <div class="timeline">
+    <div class="job">
+      <div class="when"><b>Now</b>March 2026 – Present</div>
+      <div><h3>Backend Developer <span>(BetaCodes)</span></h3>
+        <ul><li>Backend services that stream real-time data to AI services with Kafka, then process and store the results.</li>
+        <li>Built and maintain 5–10 Celery and Celery Beat jobs in a microservices setup.</li></ul></div>
+    </div>
+    <div class="job">
+      <div class="when"><b>1 yr 5 mo</b>October 2024 – February 2026</div>
+      <div><h3>Backend Developer <span>(Devticks)</span></h3>
+        <ul><li>Django EDI systems for 10+ retail partners such as Walmart, Home Depot and Target, around 5,000–10,000 orders.</li>
+        <li>Parsed ANSI X12 files into Django models and generated acknowledgments, shipment notices and invoices.</li>
+        <li>Refactored queue code, removed N+1 queries and added indexing and caching, cutting API calls by about 30%.</li></ul></div>
+    </div>
+    <div class="job">
+      <div class="when"><b>4 mo</b>July 2024 – October 2024</div>
+      <div><h3>Junior Python Developer <span>(Ticketistan)</span></h3>
+        <ul><li>REST APIs for hotel booking, flight search and user authentication.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="flagship">
+  <div class="sec-id">// FLAGSHIP</div>
+  <span class="label">Freelance project</span>
+  <h2>Flagship project</h2>
+  <p class="lede">A full-stack EDI platform for US medical transport billing: a Django backend and a React dashboard.</p>
+  <div class="flag">
+    <div class="flag-head">
+      <div><span class="label">Healthcare EDI · Full-stack</span><h3>RedArt EDI Platform</h3>
+        <p class="lede">Turns medical transport trips into HIPAA X12 837P claims, sends them to the state over SFTP and reads the responses back. Billing staff track claims, batches and acknowledgements in a React dashboard.</p>
+        <div class="chips"><span class="chip">Django 5.2</span><span class="chip">DRF</span><span class="chip">PostgreSQL</span><span class="chip">Celery + Beat</span><span class="chip">Redis</span><span class="chip">Docker</span><span class="chip">React + TypeScript</span><span class="chip">TanStack Query</span></div></div>
+      <div style="display:grid;gap:8px;justify-items:end"><a class="gh" href="https://github.com/ayazkhan1410/RedArt-EDI-Backend" target="_blank" rel="noopener">Backend ↗</a><a class="gh" href="https://github.com/ayazkhan1410/RedArt-EDI-Frontend" target="_blank" rel="noopener">Frontend ↗</a></div>
+    </div>
+    <div class="flag-stats">
+      <div><b>837P</b><span>Claims generated</span></div>
+      <div><b>999 / 277</b><span>Acks imported</span></div>
+      <div><b>835</b><span>Payments imported</span></div>
+      <div><b>26</b><span>Test files</span></div>
+    </div>
+    <div class="steps-label">Claim pipeline · tap a step</div>
+    <div class="steps" role="tablist" id="steps"></div>
+    <div class="step-detail" id="stepDetail" role="tabpanel"></div>
+  </div>
+</section>
+
+<section class="wrap" id="projects">
+  <div class="sec-id">// PROJECTS</div>
+  <span class="label">Selected work</span>
+  <h2>Projects</h2>
+  <p class="lede">Complete projects with a working backend, frontend or AI layer. All of them are on GitHub.</p>
+  <div class="filters" id="filters">
+    <button class="filter" aria-pressed="true" data-f="all">All</button>
+    <button class="filter" aria-pressed="false" data-f="backend">Backend</button>
+    <button class="filter" aria-pressed="false" data-f="ai">AI</button>
+    <button class="filter" aria-pressed="false" data-f="fullstack">Full-stack</button>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="wrap" id="skills">
+  <div class="sec-id">// SKILLS</div>
+  <span class="label">Toolbox</span>
+  <h2>Skills</h2>
+  <div class="skills">
+    <div class="panel skill"><h3>Languages &amp; frameworks</h3><div class="chips"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Java</span><span class="chip">Django</span><span class="chip">DRF</span><span class="chip">Flask</span><span class="chip">Celery</span></div></div>
+    <div class="panel skill"><h3>Data &amp; infrastructure</h3><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">Redis</span><span class="chip">Elasticsearch</span><span class="chip">Kafka</span><span class="chip">AWS EC2 · S3 · SQS</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span></div></div>
+    <div class="panel skill"><h3>Integrations &amp; AI</h3><div class="chips"><span class="chip">REST APIs</span><span class="chip">JWT</span><span class="chip">EDI ANSI X12</span><span class="chip">SFTP / AS2</span><span class="chip">LangChain</span><span class="chip">LangGraph</span><span class="chip">Swagger</span></div></div>
+  </div>
+</section>
+
+<section class="wrap contact" id="contact">
+  <span class="label">Get in touch</span>
+  <h2>Let's build something reliable.</h2>
+  <p class="lede">I'm open to backend developer roles, remote or on-site, and freelance Django work.</p>
+  <div class="mail">
+    <code id="email">programmingwithayaz@gmail.com</code>
+    <button class="btn red" id="copy">Copy email</button>
+  </div>
+  <div class="socials">
+    <a href="https://github.com/ayazkhan1410" target="_blank" rel="noopener">github.com/ayazkhan1410</a>
+    <a href="https://linkedin.com/in/studywithayaz" target="_blank" rel="noopener">linkedin.com/in/studywithayaz</a>
+    <span>+92 313 075 3830</span>
+  </div>
+</section>
+<footer>© 2026 Ayaz Khan · Built with plain HTML, CSS and JS</footer>
+
+<div id="layer" aria-hidden="true"></div>
+<div class="bar" role="status">
+  <div class="dots" id="dots"></div>
+  <span><span id="state">Building</span> <b id="done">0</b>/<b id="total">0</b></span>
+  <div class="prog hide-sm"><span id="prog"></span></div>
+  <b id="time" class="hide-sm">0.0s</b>
+  <button id="skip" type="button" class="ghost">Skip</button>
+  <button id="logBtn" type="button" class="ghost hide-sm">Logs</button>
+  <button id="replay" type="button" hidden>Replay</button>
+</div>
+<div class="log" id="log" aria-hidden="true"><header>django · runserver <span>● live</span></header><ol id="logList"></ol></div>
+<div class="toast" id="toast" hidden>Copied</div>
+
+<script id="main">
+(() => {
+  // ---------- capture clean source before anything changes the page ----------
+  const SOURCE = (() => {
+    const root = document.documentElement.cloneNode(true);
+    root.removeAttribute("data-theme"); root.removeAttribute("data-ak-theme");
+    const pick = sel => [...root.querySelectorAll(sel)];
+    const headParts = pick('title, link[rel="preconnect"], link[rel="stylesheet"], #site-css, #theme-init');
+    const css = (root.querySelector("#site-css") || {}).textContent || "";
+    const main = root.querySelector("#main"), js = main ? main.textContent : "";
+    const body = root.querySelector("body");
+    headParts.forEach(n => n.remove());
+    body.querySelectorAll("script, style, meta, link, title").forEach(n => n.remove());
+    const markup = body.innerHTML.trim();
+    const full = [
+      "<!doctype html>", '<html lang="en">', "<head>",
+      '<meta charset="utf-8">', '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
+      ...headParts.map(n => n.outerHTML), "</head>", "<body>", markup,
+      main ? main.outerHTML : "", "</body>", "</html>", ""
+    ].join("\n");
+    return { full, html: markup, css: css.trim(), js: js.trim() };
+  })();
+
+  // Claim pipeline stepper
+  const steps = [
+    ["Trip", "A medical transport trip is created through the API with patient, provider and mileage details.", 'POST /api/v1/nemt-trips/\n{"patient": 2231, "pickup": "2026-11-03T09:15", "miles": 18.4}'],
+    ["Claim", "Trips become claims with service lines, billing codes and the provider's billing profile.", "CLM*TRIP1042*86.50***41:B:1*Y*A*Y*Y~\nSV1*HC:A0130*86.50*UN*1***1~"],
+    ["Validate", "The claim is checked against payer rules before it can be batched, and errors are returned to the client app.", 'POST /api/v1/claims/1042/validate/\n{"valid": true, "errors": []}'],
+    ["Batch", "Valid claims are grouped into a submission batch so they go out together.", 'POST /api/v1/submission-batches/\n{"claims": [1042, 1043, 1047], "status": "ready"}'],
+    ["837P", "The batch is rendered into a HIPAA X12 837P file.", "ISA*00*          *00*          *ZZ*SENDERID       *ZZ*RECEIVERID     *261103*0915*^*00501*000000905*0*P*:~\nGS*HC*SENDERID*RECEIVERID*20261103*0915*905*X*005010X222A1~\nST*837*0001*005010X222A1~"],
+    ["SFTP", "A Celery task uploads the file to the state's SFTP/MFT server.", "[celery] send_batch_sftp[batch=88] started\n[celery] uploaded 837P_000000905.x12 (14.2 KB)\n[celery] send_batch_sftp[batch=88] succeeded in 2.31s"],
+    ["999 / 277", "Acknowledgement files are imported to mark each claim as accepted or rejected.", "IK5*A~\nAK9*A*1*1*1~\nSTC*A2:20*20261104*WQ*86.50~"],
+    ["835", "Payment (remittance) files are imported and matched back to claims.", "CLP*TRIP1042*1*86.50*86.50**MC*2026308AB1042~\nSVC*HC:A0130*86.50*86.50**1~"]
+  ];
+  const tabs = document.getElementById("steps"), detail = document.getElementById("stepDetail");
+  function show(i) {
+    [...tabs.children].forEach((b, j) => b.setAttribute("aria-selected", j === i));
+    detail.innerHTML = `<b>STEP ${i + 1} OF ${steps.length} · ${steps[i][0]}</b><p>${steps[i][1]}</p><span class="seg-cap">Sample output</span><pre class="seg"></pre>`;
+    detail.querySelector(".seg").textContent = steps[i][2];
+  }
+  steps.forEach(([name], i) => {
+    const b = document.createElement("button");
+    b.className = "step"; b.type = "button"; b.setAttribute("role", "tab"); b.textContent = name;
+    b.onclick = () => show(i);
+    tabs.appendChild(b);
+  });
+  show(0);
+
+  // Projects
+  const projects = [
+    { t: "LESA Academy Portal", tags: ["fullstack", "backend"], d: "Full management system for an academy: students, fees with payment proofs, attendance, teacher salaries and an expense ledger. Includes a finance dashboard, PDF reports, SMS alerts to parents and English/Urdu support.", s: "Django · DRF · Celery · Redis · React · Docker", links: [["Code", "lesa-academy-portal"]] },
+    { t: "SmartShop POS", tags: ["fullstack", "backend"], d: "Point-of-sale and inventory system built for a retail mart from the client's old desktop POS. Covers products, barcodes, suppliers and checkout, with a React web app and an Electron desktop app.", s: "Django · DRF · React + TS · Electron · Docker", links: [["Code", "retail-pos-system"]] },
+    { t: "Agentic AI with Django", tags: ["ai", "backend"], d: "Multi-agent REST API. A LangGraph supervisor routes each question to a document agent (create, search, update documents) or a movie search agent on the TMDB API, with conversation memory per thread.", s: "DRF · LangChain · LangGraph · OpenAI", links: [["Code", "Agentic-AI-with-Django"]] }
+  ];
+  const cards = document.getElementById("cards");
+  function render(f) {
+    cards.innerHTML = projects.filter(p => f === "all" || p.tags.includes(f)).map(p => `
+      <article class="card">
+        <span class="label">${p.tags.map(t => t === "ai" ? "AI" : t === "fullstack" ? "Full-stack" : "Backend").join(" · ")}</span>
+        <h3>${p.t}</h3><p>${p.d}</p>
+        <div class="foot"><span class="chip">${p.s}</span>
+        ${p.links.map(([l, r]) => `<a href="https://github.com/ayazkhan1410/${r}" target="_blank" rel="noopener">${l} ↗</a>`).join("")}</div>
+      </article>`).join("");
+  }
+  document.getElementById("filters").addEventListener("click", e => {
+    const b = e.target.closest(".filter"); if (!b) return;
+    document.querySelectorAll(".filter").forEach(x => x.setAttribute("aria-pressed", x === b));
+    render(b.dataset.f);
+  });
+  render("all");
+
+  // Copy email
+  const toast = document.getElementById("toast");
+  document.getElementById("copy").addEventListener("click", () => {
+    const text = document.getElementById("email").textContent;
+    const done = msg => { toast.textContent = msg; toast.hidden = false; setTimeout(() => toast.hidden = true, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => done("Email copied"), () => select());
+    } else select();
+    function select() {
+      const r = document.createRange(); r.selectNodeContents(document.getElementById("email"));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected, press Ctrl+C");
+    }
+  });
+
+  // ---------- Agents build the page in real time ----------
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const COLOR_VARS = ["--c1", "--c2", "--c3", "--c4", "--red", "--c1", "--c3", "--c2"];
+  const colorAt = i => getComputedStyle(document.documentElement).getPropertyValue(COLOR_VARS[i % COLOR_VARS.length]).trim();
+  const AGENTS = innerWidth < 600 ? 5 : 8;
+  const SEL = [
+    "nav", ".word", ".hello", ".name", ".role", ".intro", ".btns .btn", ".stat", ".portrait", ".side .panel",
+    "section .sec-id", "section > .label", "section h2", "section > .lede", ".about > div > p", ".fact",
+    ".job", ".flag-head", ".flag-stats > div", ".steps-label", ".steps", ".step-detail",
+    ".filters", ".card", ".skill", ".mail", ".socials", "footer"
+  ].join(",");
+
+  const layer = document.getElementById("layer"), dots = document.getElementById("dots");
+  const doneEl = document.getElementById("done"), totalEl = document.getElementById("total"),
+        timeEl = document.getElementById("time"), progEl = document.getElementById("prog"),
+        stateEl = document.getElementById("state"), skipBtn = document.getElementById("skip"), replayBtn = document.getElementById("replay");
+
+  let items = [], queue = [], agents = [], done = 0, t0 = 0, finished = false, observer = null, timer = null, run = 0;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const pageRect = el => { const r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height }; };
+  const maxX = () => document.documentElement.clientWidth - 24;
+
+  function collect() {
+    const all = [...document.querySelectorAll(SEL)];
+    return all.filter(el => !all.some(o => o !== el && o.contains(el)));
+  }
+
+  function moveTo(a, x, y, instant) {
+    x = Math.max(4, Math.min(maxX(), x));
+    if (instant) { a.el.style.transition = "none"; a.el.style.transform = `translate(${x}px,${y}px)`; void a.el.offsetWidth; a.el.style.transition = ""; }
+    else a.el.style.transform = `translate(${x}px,${y}px)`;
+  }
+  const roam = a => moveTo(a, 60 + Math.random() * (innerWidth - 160), scrollY + 100 + Math.random() * Math.max(100, innerHeight - 240));
+
+  function makeAgents() {
+    layer.innerHTML = ""; dots.innerHTML = "";
+    agents = Array.from({ length: AGENTS }, (_, i) => {
+      const color = colorAt(i);
+      const el = document.createElement("div");
+      el.className = "agent"; el.style.color = color;
+      el.innerHTML = `<svg viewBox="0 0 18 18"><path d="M2 1 L16 8 L9.5 9.5 L7 17 Z" fill="${color}" stroke="#0b0a0c" stroke-width="1.2"/></svg>`;
+      layer.appendChild(el);
+      const d = document.createElement("i"); d.style.background = color; dots.appendChild(d);
+      const a = { el, color, id: i + 1 };
+      moveTo(a, innerWidth / 2 + (Math.random() - .5) * 120, scrollY + innerHeight / 2 + (Math.random() - .5) * 120, true);
+      return a;
+    });
+  }
+
+  async function typeText(el, myRun) {
+    const text = el.dataset.full;
+    const step = Math.max(1, Math.ceil(text.length / 45));
+    el.textContent = ""; el.classList.remove("pending"); el.classList.add("typing");
+    for (let i = 0; i < text.length; i += step) {
+      if (myRun !== run) return;
+      el.textContent = text.slice(0, i + step);
+      await sleep(16);
+    }
+    el.textContent = text; el.classList.remove("typing");
+  }
+
+  async function build(a, item, myRun) {
+    const el = item.el, r = pageRect(el), began = performance.now();
+    moveTo(a, r.x - 6, r.y - 6);
+    await sleep(430); if (myRun !== run) return;
+    const sel = document.createElement("div"); sel.className = "sel";
+    sel.style.left = r.x + "px"; sel.style.top = r.y + "px"; sel.style.borderColor = a.color;
+    const tag = el.classList.contains("card") ? "card" : el.tagName.toLowerCase();
+    sel.innerHTML = `<i></i><i></i><i></i><i></i><b style="background:${a.color}">agent-${a.id} · ${tag} ${Math.round(r.w)}×${Math.round(r.h)}</b>`;
+    sel.querySelectorAll("i").forEach(i => i.style.borderColor = a.color);
+    layer.appendChild(sel); void sel.offsetWidth;
+    sel.style.width = r.w + "px"; sel.style.height = r.h + "px";
+    moveTo(a, r.x + r.w - 4, r.y + r.h - 4);
+    await sleep(300); if (myRun !== run) { sel.remove(); return; }
+    if (item.type) await typeText(el, myRun);
+    else { el.classList.remove("pending"); el.classList.add("revealing"); await sleep(380); el.classList.remove("revealing"); }
+    if (myRun !== run) { sel.remove(); return; }
+    sel.style.opacity = "0"; setTimeout(() => sel.remove(), 320);
+    item.done = true; done++; update();
+    log("POST", routeFor(el), 201, Math.round(performance.now() - began), a);
+  }
+
+  async function worker(a, myRun) {
+    while (myRun === run) {
+      const item = queue.shift();
+      if (item) { await build(a, item, myRun); continue; }
+      roam(a);
+      await sleep(finished ? 1800 + Math.random() * 1600 : 700);
+    }
+  }
+
+  function update() {
+    doneEl.textContent = done; totalEl.textContent = items.length;
+    progEl.style.width = (items.length ? done / items.length * 100 : 0) + "%";
+    if (done >= items.length && !finished) {
+      finished = true; clearInterval(timer);
+      stateEl.textContent = "Built";
+      timeEl.textContent = `${AGENTS} agents · ${((performance.now() - t0) / 1000).toFixed(1)}s`;
+      skipBtn.hidden = true; replayBtn.hidden = false;
+    }
+  }
+
+  function revealAll() {
+    items.forEach(it => {
+      if (it.type && it.el.dataset.full != null) it.el.textContent = it.el.dataset.full;
+      it.el.classList.remove("pending", "typing", "revealing");
+    });
+  }
+
+  function start() {
+    run++; const myRun = run;
+    if (observer) observer.disconnect();
+    clearInterval(timer);
+    if (items.length) revealAll();
+    items = collect().map(el => {
+      const type = el.children.length === 0 && el.textContent.trim().length > 0 && el.textContent.length < 400;
+      if (type) el.dataset.full = el.textContent;
+      el.classList.add("pending");
+      return { el, type, done: false, queued: false };
+    });
+    queue = []; done = 0; finished = false; t0 = performance.now();
+    stateEl.textContent = "Building"; skipBtn.hidden = false; replayBtn.hidden = true;
+    timer = setInterval(() => { timeEl.textContent = ((performance.now() - t0) / 1000).toFixed(1) + "s"; }, 100);
+    update();
+    observer = new IntersectionObserver(entries => {
+      entries.filter(e => e.isIntersecting).map(e => items.find(i => i.el === e.target))
+        .filter(i => i && !i.queued).sort((x, y) => items.indexOf(x) - items.indexOf(y))
+        .forEach(i => { i.queued = true; queue.push(i); observer.unobserve(i.el); });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    items.forEach(i => observer.observe(i.el));
+    makeAgents();
+    agents.forEach((a, k) => setTimeout(() => worker(a, myRun), k * 90));
+  }
+
+  skipBtn.addEventListener("click", () => {
+    run++; const myRun = run;
+    if (observer) observer.disconnect();
+    layer.querySelectorAll(".sel").forEach(e => e.remove());
+    queue = []; revealAll(); done = items.length; update();
+    agents.forEach(a => worker(a, myRun));
+  });
+  replayBtn.addEventListener("click", () => { scrollTo({ top: 0, behavior: "instant" }); setTimeout(start, 60); });
+
+  // ---------- server log ----------
+  const logList = document.getElementById("logList"), logBox = document.getElementById("log"), logBtn = document.getElementById("logBtn");
+  const esc = t => t.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  function routeFor(el) {
+    const host = el.closest("section, header, nav, footer");
+    const area = host ? (host.id || host.tagName.toLowerCase()) : "page";
+    const name = el.classList.contains("card") ? "card" : (el.className.split(" ")[0] || el.tagName.toLowerCase());
+    return `/api/v1/${area === "top" ? "hero" : area}/${name}`;
+  }
+  function log(method, path, status, ms, a) {
+    const now = new Date(), ts = now.toTimeString().slice(0, 8) + "." + String(now.getMilliseconds()).padStart(3, "0");
+    const li = document.createElement("li");
+    li.innerHTML = `${ts} <span class="m">${method}</span> ${esc(path)} <span class="ok">${status}</span> <span class="ms">${ms}ms</span>${a ? ` <span style="color:${a.color}">agent-${a.id}</span>` : ""}`;
+    logList.appendChild(li);
+    while (logList.children.length > 7) logList.firstChild.remove();
+  }
+  let logOn = innerWidth >= 700;
+  logBox.hidden = !logOn;
+  logBtn.addEventListener("click", () => { logOn = !logOn; logBox.hidden = !logOn; });
+  log("GET", "/health/", 200, 3);
+  const healthTimer = setInterval(() => { if (finished) log("GET", ["/health/", "/api/v1/projects/", "/api/v1/experience/"][Math.floor(Math.random() * 3)], 200, 4 + Math.floor(Math.random() * 30)); }, 3500);
+
+  // ---------- code view ----------
+  const codeBtn = document.getElementById("codeBtn"), codeView = document.getElementById("codeView");
+  const uiParts = () => [...document.querySelectorAll("header.hero, section, footer")];
+  function setCode(on) {
+    if (on && !finished) skipBtn.click();
+    codeBtn.setAttribute("aria-pressed", on);
+    codeView.hidden = !on; uiParts().forEach(el => el.hidden = on);
+    layer.hidden = on;
+    if (on) log("GET", "/source/index.html", 200, 8 + Math.floor(Math.random() * 20));
+    scrollTo({ top: 0, behavior: "instant" });
+  }
+  codeBtn.addEventListener("click", () => setCode(codeView.hidden));
+  document.getElementById("backUi").addEventListener("click", () => setCode(false));
+  document.querySelectorAll("#navLinks a").forEach(l => l.addEventListener("click", () => { if (!codeView.hidden) setCode(false); }));
+
+  // ---------- mobile menu ----------
+  const menuBtn = document.getElementById("menuBtn"), navLinks = document.getElementById("navLinks");
+  menuBtn.addEventListener("click", () => {
+    const open = !navLinks.classList.contains("open");
+    navLinks.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open);
+  });
+  navLinks.addEventListener("click", e => { if (e.target.closest("a")) { navLinks.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); } });
+
+  // ---------- source viewer ----------
+  const srcCode = document.getElementById("srcCode"), srcTabs = document.getElementById("srcTabs");
+  let srcKey = "full";
+  function showSrc(k) {
+    srcKey = k;
+    srcTabs.querySelectorAll(".src-tab").forEach(b => b.setAttribute("aria-selected", b.dataset.k === k));
+    const text = SOURCE[k], lines = text.split("\n");
+    srcCode.innerHTML = lines.map(l => `<span class="ln">${esc(l) || " "}</span>`).join("");
+    srcCode.scrollTop = 0;
+    document.getElementById("srcLines").textContent = lines.length;
+    document.getElementById("srcSize").textContent = (new Blob([text]).size / 1024).toFixed(1);
+  }
+  srcTabs.addEventListener("click", e => { const b = e.target.closest(".src-tab"); if (b) showSrc(b.dataset.k); });
+  document.getElementById("srcCopy").addEventListener("click", () => {
+    const text = SOURCE[srcKey];
+    const name = srcKey === "full" ? "index.html" : srcKey.toUpperCase();
+    const ok = () => { toast.textContent = `${name} copied`; toast.hidden = false; setTimeout(() => toast.hidden = true, 1800); };
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(srcCode);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      toast.textContent = "Selected, press Ctrl+C"; toast.hidden = false; setTimeout(() => toast.hidden = true, 2200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback);
+    else fallback();
+  });
+  showSrc("full");
+
+  // ---------- theme ----------
+  const themeBtn = document.getElementById("themeBtn");
+  const current = () => getComputedStyle(document.documentElement).colorScheme.includes("light") ? "light" : "dark";
+  const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  function paintThemeBtn() {
+    const toLight = current() === "dark";
+    themeBtn.innerHTML = (toLight ? SUN : MOON) + `<span class="lbl">${toLight ? "Light" : "Dark"}</span>`;
+    themeBtn.setAttribute("aria-label", toLight ? "Switch to light theme" : "Switch to dark theme");
+    themeBtn.title = themeBtn.getAttribute("aria-label");
+  }
+  paintThemeBtn();
+  matchMedia("(prefers-color-scheme: light)").addEventListener("change", paintThemeBtn);
+  new MutationObserver(paintThemeBtn).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  themeBtn.addEventListener("click", () => {
+    const next = current() === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-ak-theme", next);
+    try { localStorage.setItem("ak-theme", next); } catch (e) {}
+    paintThemeBtn();
+    agents.forEach((a, i) => {
+      a.color = colorAt(i); a.el.style.color = a.color;
+      a.el.querySelector("path").setAttribute("fill", a.color);
+      if (dots.children[i]) dots.children[i].style.background = a.color;
+    });
+  });
+
+  if (reduce) document.querySelector(".bar").hidden = true;
+  else start();
+})();
+</script>
+</body>
+</html>
